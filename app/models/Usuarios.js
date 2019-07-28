@@ -3,25 +3,40 @@ class Usuarios {
     constructor(conn){
         console.log("constructor usuarios");
         this.conn = conn;
+        this.collection = "usuarios";
     }
 
-    get conn(){
-        return this.conn;
+    async cadastrar(usuario){
+        try {
+            await this.conn.client.connect();
+            const r = await this.conn.insertOne(usuario, this.collection);
+            this.conn.assert.equal(1, r.insertedCount);
+        } catch (err) {
+            console.log(err.stack);
+        }
+        await this.conn.client.close();
     }
 
-    cadastrar(usuario){
-        this.conn.client.connect((err)=>{
-            this.conn.assert.equal(null, err);
-            console.log("Connected successfully to server");
+    async autenticar(usuario, req){
+        try {
+            await this.conn.client.connect();
+            const docs = await this.conn.find(usuario, this.collection);
+            console.log("r > " + JSON.stringify(docs));
+            this.conn.assert.equal(1, docs.length);
+            console.log("retornou 1 ");
+            Usuarios.criaSessao(docs[0], req);
+        } catch (err) {
+            console.log(err.stack);
+        }
 
-            const db = this.conn.client.db(this.conn.dbName);
+        await this.conn.client.close();
+        console.log("closed conn");
+    }
 
-            this.conn.insertDocuments(db, () => {
-                this.conn.client.close();
-                console.log("close");
-            });
-        });
-        console.log(usuario);
+    static criaSessao(usuario, req){
+        req.session.autorizado = true;
+        req.session.usuario = usuario.usuario;
+        req.session.casa = usuario.casa;
     }
 }
 

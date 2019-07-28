@@ -17,7 +17,6 @@ module.exports.cadastrar = (application, req, res) => {
     }
 
     var connection = new application.config.connection('mongodb://root:root@localhost:27017', 'got');
-    //console.log(connection);
     var Usuarios = new application.app.models.Usuarios(connection);
     Usuarios.cadastrar(dados);
 

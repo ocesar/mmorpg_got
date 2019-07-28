@@ -3,6 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 class MongoDB{
+
     constructor(_url, _dbName){
         this.url = _url;
         this.dbName = _dbName;
@@ -13,37 +14,41 @@ class MongoDB{
     insertDocuments = (documents, collection, db, callback) => {
         // Get the documents collection
         const coll = db.collection(collection);
-        const test = {a:1, b:2, c:3};
         // Insert some documents
-        coll.insertMany(test, function(err, result) {
+        coll.insertMany(documents, function(err, result) {
             assert.equal(err, null);
             console.log("Inserted "+ documents + " into " + collection);
             callback(result);
         });
-    }
-}
+    };
 
-// var mongoDB = () => {
-//     // Connection URL
-//     //const url = 'mongodb:root:root@//localhost:27017';
-//
-//     // Database Name
-//     //const dbName = 'got';
-//
-//     // Create a new MongoClient
-//     //const client = new MongoClient(url);
-//
-//     // Use connect method to connect to the Server
-//     client.connect(function (err) {
-//         assert.equal(null, err);
-//         console.log("Connected successfully to mongoDB");
-//
-//         const db = client.db(dbName);
-//
-//         client.close();
-//         return db;
-//     });
-// };
+    insertOne = async (document, collection) => {
+        try{
+            const db = this.client.db(this.dbName);
+            // Get the documents collection
+            const coll = db.collection(collection);
+            // Insert some documents
+            return await coll.insertOne(document, {
+                w: 'majority',
+                wtimeout: 10000,
+                serializeFunctions: true,
+                forceServerObjectId: true
+            });
+        } catch(err){
+            console.log(err.stack);
+        }
+        return null;
+    };
+
+    find = async (documents, collection) => {
+        console.log("buscar:" + JSON.stringify(documents));
+        const db = this.client.db(this.dbName);
+        // Get the documents collection
+        const coll = db.collection(collection);
+        // Insert some documents
+        return await coll.find(documents).limit(1).toArray();
+    };
+}
 
 module.exports = () => {
     return MongoDB;
