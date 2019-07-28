@@ -11,15 +11,17 @@ class MongoDB{
         this.assert = assert;
     }
 
-    insertDocuments = (documents, collection, db, callback) => {
-        // Get the documents collection
-        const coll = db.collection(collection);
-        // Insert some documents
-        coll.insertMany(documents, function(err, result) {
-            assert.equal(err, null);
-            console.log("Inserted "+ documents + " into " + collection);
-            callback(result);
-        });
+    insertMany = async (documents, collection) => {
+        try {
+            const db = this.client.db(this.dbName);
+            // Get the documents collection
+            const coll = db.collection(collection);
+            // Insert some documents
+            return await coll.insertMany(documents);
+        } catch(err){
+            console.log(err.stack);
+        }
+        return null
     };
 
     insertOne = async (document, collection) => {
@@ -41,12 +43,15 @@ class MongoDB{
     };
 
     find = async (documents, collection) => {
-        console.log("buscar:" + JSON.stringify(documents));
-        const db = this.client.db(this.dbName);
-        // Get the documents collection
-        const coll = db.collection(collection);
-        // Insert some documents
-        return await coll.find(documents).limit(1).toArray();
+        try {
+            const db = this.client.db(this.dbName);
+            // Get the documents collection
+            const coll = db.collection(collection);
+            // Insert some documents
+            return await coll.find(documents).limit(1).toArray();
+        } catch(err){
+            console.log(err.stack)
+        }
     };
 }
 
