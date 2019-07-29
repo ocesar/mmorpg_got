@@ -12,9 +12,10 @@ class Usuarios {
             const r = await this.conn.insertOne(usuario, this.collection);
             this.conn.assert.equal(1, r.insertedCount);
         } catch (err) {
+            console.log("errrrrou!");
             console.log(err.stack);
         }
-        await this.conn.client.close();
+        this.conn.client.close();
     }
 
     async autenticar(usuario, req){
@@ -29,7 +30,7 @@ class Usuarios {
             console.log(err.stack);
         }
 
-        await this.conn.client.close();
+        this.conn.client.close();
         console.log("closed conn");
     }
 

@@ -22,7 +22,7 @@ class Jogo {
         } catch (err) {
             console.log(err.stack);
         }
-        await this.conn.client.close();
+        this.conn.client.close();
     }
 
     async iniciaJogo(usuario){
@@ -36,7 +36,7 @@ class Jogo {
             console.log(err.stack);
         }
 
-        await this.conn.client.close();
+        this.conn.client.close();
     }
 }
 

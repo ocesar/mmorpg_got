@@ -4,10 +4,12 @@ const assert = require('assert');
 
 class MongoDB{
 
-    constructor(_url, _dbName){
-        this.url = _url;
+    constructor(_dbName){
+        this.url = 'mongodb://root:root@localhost:27017';
         this.dbName = _dbName;
-        this.client = new MongoClient(this.url);
+        this.client = new MongoClient(this.url, {
+            useNewUrlParser: true
+        });
         this.assert = assert;
     }
 

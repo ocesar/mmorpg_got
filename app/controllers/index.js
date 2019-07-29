@@ -18,7 +18,7 @@ module.exports.autenticar = async function(application, req, res){
     }
 
     // autenticacao com base no DB
-    var connection = new application.config.connection('mongodb://root:root@localhost:27017', 'got');
+    var connection = new application.config.connection('got');
     var Usuarios = new application.app.models.Usuarios(connection);
     await Usuarios.autenticar(dados, req);
 

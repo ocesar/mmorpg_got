@@ -1,13 +1,14 @@
 module.exports.load = async function(application, req, res){
 
     if(req.session.autorizado !== true){
-        res.send("necessario fazer login");
+        msg = "Necessário fazer login";
+        res.render('index', "necessario fazer login");
         return;
-    } 
+    }
 
     var usuario = req.session.usuario;
 
-    var connection = new application.config.connection('mongodb://root:root@localhost:27017', 'got');
+    var connection = new application.config.connection('got');
     var Jogo = new application.app.models.Jogo(connection);
 
     var dadosJogo = await Jogo.iniciaJogo(usuario);
@@ -20,7 +21,6 @@ module.exports.logout = function(application, req, res){
         res.render('index',{validacao:{}});
     });
 };
-
 
 module.exports.suditos = function(application, req, res){
     res.render('aldeoes',{validacao:{}});    

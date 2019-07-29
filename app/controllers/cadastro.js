@@ -2,7 +2,6 @@ module.exports.load = (application, req, res) => {
     res.render('cadastro', {validacao:{}, dadosCadastro:{}});
 };
 
-
 module.exports.cadastrar = (application, req, res) => {
     let dados = req.body;
 
@@ -18,11 +17,11 @@ module.exports.cadastrar = (application, req, res) => {
         return;
     }
 
-    var connection = new application.config.connection('mongodb://root:root@localhost:27017', 'got');
+    var connection = new application.config.connection('got');
     var Usuarios = new application.app.models.Usuarios(connection);
     var Jogo = new application.app.models.Jogo(connection);
     Usuarios.cadastrar(dados);
     Jogo.gerarParametros(dados.usuario);
-
-    res.send(req.body);
+    var msg = "Usuário " + dados.usuario + " foi cadastrado com sucesso";
+    res.render('index', {validacao:[{msg:msg}]});
 };
