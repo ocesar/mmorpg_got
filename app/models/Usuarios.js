@@ -21,7 +21,7 @@ class Usuarios {
     async autenticar(usuario, req){
         try {
             await this.conn.client.connect();
-            const docs = await this.conn.find(usuario, this.collection);
+            const docs = await this.conn.findOne(usuario, this.collection);
             console.log("r > " + JSON.stringify(docs));
             this.conn.assert.equal(1, docs.length);
             console.log("retornou 1 ");

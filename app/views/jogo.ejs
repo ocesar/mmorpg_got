@@ -27,7 +27,28 @@
 		</nav>
 
 	    <div class="container">
-	    	
+
+			<% if (msg =='A'){ %>
+				<div class="alert alert-danger" id="msg">
+					<strong>Operação inválida! Verifica se os campos foram informados. </strong>
+				</div>
+			<% } %>
+			<% if (msg =='B'){ %>
+				<div class="alert alert-info" id="msg_erros">
+					<strong>Ação realizada com sucesso! </strong>
+				</div>
+			<% } %>
+			<% if (msg =='C'){ %>
+				<div class="alert alert-info" id="msg_erros">
+					<strong>A atividade ordenada foi finalizada! </strong>
+				</div>
+			<% } %>
+			<% if (msg =='D'){ %>
+				<div class="alert alert-info" id="msg_erros">
+					<strong>A atividade ordenada foi revogada! </strong>
+				</div>
+			<% } %>
+
 			<div class="row">
 	    		<div class="col-sm-3 casa">
 					<img src="images/casa_<%=img_casa%>.jpg" />
@@ -83,15 +104,19 @@
 					
 					<div class="col-sm-2">
 						<img src="images/outros/moeda.jpg" title="Moeda" alt="Moeda"/>
-						<span>25</span>
+						<span><%=jogo.moeda%></span>
 					</div>
 					
 				</div>
 			</div>
 		</div>
+
+	</body>
+
 	<script>
 		$(document).ready(() => {
 			$('#btnSuditos').click(()=>{
+				$("#msg").hide();
 				$.ajax({
 					url: '/suditos',
 					method: "get",
@@ -99,24 +124,37 @@
 						$('#acoes').html(data);
 					})
 				});
-				console.log("suditos");
 			});
 
 			$('#btnPergaminhos').click(()=>{
+				$("#msg").hide();
 				$.ajax({
 					url: '/pergaminhos',
 					method: "get",
 					success: ((data) => {
 						$('#acoes').html(data);
+						clearInterval(timerId);
+						cronometro();
 					})
 				});
-				console.log("pergaminhos");
 			});
-			
+
 			$('#btnLogout').click(()=>{
 				window.location.href = '/logout';
 			});
 		});
+		let timerId = null;
+		function cronometro() {
+			$('.tempo_restante').each((index, element) => {
+				let segundos = $(element).html();
+				segundos = parseInt(segundos) - 1;
+
+				if (segundos < 0) {
+					window.location.href = "/jogo?msg=C";
+				}
+				else $(element).html(segundos);
+			});
+			timerId = setTimeout('cronometro()', 1000);
+		}
 	</script>
-	</body>
 </html>

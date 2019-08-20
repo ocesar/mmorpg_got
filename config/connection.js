@@ -44,7 +44,7 @@ class MongoDB{
         return null;
     };
 
-    find = async (documents, collection) => {
+    findOne = async (documents, collection) => {
         try {
             const db = this.client.db(this.dbName);
             // Get the documents collection
@@ -54,6 +54,45 @@ class MongoDB{
         } catch(err){
             console.log(err.stack)
         }
+    };
+
+    find = async (documents, collection) => {
+        try {
+            const db = this.client.db(this.dbName);
+            // Get the documents collection
+            const coll = db.collection(collection);
+            // Insert some documents
+            return await coll.find(documents).toArray();
+        } catch(err){
+            console.log(err.stack)
+        }
+    };
+
+    updateOne = async (where, document, collection) => {
+        try{
+            const db = this.client.db(this.dbName);
+            // Get the documents collection
+            const coll = db.collection(collection);
+            // Update a single document
+            return await coll.updateOne(where, document);
+        } catch(err){
+            console.log(err.stack);
+        }
+        return null;
+    };
+
+    deleteOne = async (where, collection) => {
+        try{
+            const db = this.client.db(this.dbName);
+            // Get the documents collection
+            const coll = db.collection(collection);
+            // Remove a single document
+            return await coll.deleteOne(where);
+        } catch(err){
+            console.log(err.stack);
+            return err.stack;
+        }
+        return null;
     };
 }
 

@@ -11,6 +11,7 @@ module.exports.autenticar = async function(application, req, res){
     req.assert('senha', "Senha não pode ser vazia").notEmpty();
 
     var erros = req.validationErrors();
+    console.log(erros);
 
     if (erros) {
         res.render("index", {validacao:erros});
