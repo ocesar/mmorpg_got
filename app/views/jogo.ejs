@@ -122,6 +122,7 @@
 					method: "get",
 					success: ((data) => {
 						$('#acoes').html(data);
+						if (data.includes("login")) window.location.href = '/logout';
 					})
 				});
 			});
@@ -133,6 +134,7 @@
 					method: "get",
 					success: ((data) => {
 						$('#acoes').html(data);
+						if (data.includes("login")) window.location.href = '/logout';
 						clearInterval(timerId);
 						cronometro();
 					})

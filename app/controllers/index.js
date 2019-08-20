@@ -24,7 +24,6 @@ module.exports.autenticar = async function(application, req, res){
     await Usuarios.autenticar(dados, req);
 
     if(req.session.autorizado) {
-        console.log("sessao autorizada");
         res.redirect('jogo');
     }
     else {

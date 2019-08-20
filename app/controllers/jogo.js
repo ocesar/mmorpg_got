@@ -27,7 +27,7 @@ module.exports.logout = function(application, req, res){
 module.exports.suditos = function(application, req, res){
 
     if(req.session.autorizado !== true){
-        let msg = "Necessário fazer login novamente";
+        let msg = "Necessário fazer login";
         res.send(msg);
         return;
     }
@@ -38,9 +38,8 @@ module.exports.suditos = function(application, req, res){
 
 module.exports.pergaminhos = async function (application, req, res) {
     if (req.session.autorizado !== true) {
-        let msg = "Necessário fazer login novamente";
+        let msg = "Necessário fazer login";
         res.send(msg);
-        
         return;
     }
 
@@ -55,7 +54,7 @@ module.exports.pergaminhos = async function (application, req, res) {
 
 module.exports.ordenar_acao_suditos = function(application, req, res){
     if(req.session.autorizado !== true){
-        let msg = "Necessário fazer login novamente";
+        let msg = "Necessário fazer login";
         res.send(msg);
         return;
     }
@@ -83,7 +82,7 @@ module.exports.ordenar_acao_suditos = function(application, req, res){
 
 module.exports.revogar_acao = (application, req, res) => {
     if(req.session.autorizado !== true){
-        let msg = "Necessário fazer login novamente";
+        let msg = "Necessário fazer login";
         res.send(msg);
         return;
     }

@@ -1,7 +1,7 @@
 "use strict";
 class Usuarios {
     constructor(conn){
-        console.log("constructor usuarios");
+        //console.log("constructor usuarios");
         this.conn = conn;
         this.collection = "usuarios";
     }
@@ -12,7 +12,7 @@ class Usuarios {
             const r = await this.conn.insertOne(usuario, this.collection);
             this.conn.assert.equal(1, r.insertedCount);
         } catch (err) {
-            console.log("errrrrou!");
+            //console.log("errrrrou!");
             console.log(err.stack);
         }
         this.conn.client.close();
@@ -22,16 +22,13 @@ class Usuarios {
         try {
             await this.conn.client.connect();
             const docs = await this.conn.findOne(usuario, this.collection);
-            console.log("r > " + JSON.stringify(docs));
             this.conn.assert.equal(1, docs.length);
-            console.log("retornou 1 ");
             Usuarios.criaSessao(docs[0], req);
         } catch (err) {
             console.log(err.stack);
         }
 
         this.conn.client.close();
-        console.log("closed conn");
     }
 
     static criaSessao(usuario, req){
