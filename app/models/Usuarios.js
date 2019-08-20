@@ -1,4 +1,6 @@
 "use strict";
+const crypto = require('crypto');
+
 class Usuarios {
     constructor(conn){
         //console.log("constructor usuarios");
@@ -7,6 +9,9 @@ class Usuarios {
     }
 
     async cadastrar(usuario){
+        usuario.senha = crypto.createHash("md5").update(usuario.senha).digest("hex");
+        console.log(usuario);
+
         try {
             await this.conn.client.connect();
             const r = await this.conn.insertOne(usuario, this.collection);
@@ -19,6 +24,7 @@ class Usuarios {
     }
 
     async autenticar(usuario, req){
+        usuario.senha = crypto.createHash("md5").update(usuario.senha).digest("hex");
         try {
             await this.conn.client.connect();
             const docs = await this.conn.findOne(usuario, this.collection);
